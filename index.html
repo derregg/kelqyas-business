@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="am">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>KELQYAS Business App</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Ethiopic",sans-serif;background:#f5f7fb;color:#172033}
+.app{display:flex;min-height:100vh}.side{width:245px;background:#111827;color:#fff;padding:22px 14px;position:fixed;inset:0 auto 0 0}.brand{font-size:22px;font-weight:800;padding:8px 10px 28px}.brand small{display:block;color:#9ca3af;font-size:11px;margin-top:4px}.nav button{width:100%;border:0;background:transparent;color:#d1d5db;text-align:left;padding:13px 12px;border-radius:9px;margin:3px 0;font-size:14px;cursor:pointer}.nav button.active,.nav button:hover{background:#253047;color:#fff}.main{margin-left:245px;width:calc(100% - 245px);padding:24px;max-width:1500px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}.top h1{margin:0;font-size:25px}.date{color:#6b7280;font-size:13px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px;box-shadow:0 2px 8px #00000008}.label{color:#6b7280;font-size:13px}.value{font-size:25px;font-weight:800;margin-top:8px}.green{color:#14804a}.red{color:#c0392b}.blue{color:#2563eb}.section{margin-top:20px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:18px}.section h2{margin:0 0 14px;font-size:18px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.toolbar{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-bottom:14px}.toolbar .left{display:flex;gap:8px}.btn{border:0;border-radius:8px;padding:10px 14px;background:#111827;color:#fff;cursor:pointer}.btn.secondary{background:#e5e7eb;color:#111827}.btn.greenbtn{background:#16834b}.input,.select{padding:10px;border:1px solid #d1d5db;border-radius:8px;background:#fff;width:100%}.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.field label{display:block;font-size:12px;color:#6b7280;margin-bottom:5px}.field.full{grid-column:1/-1}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:11px 9px;border-bottom:1px solid #eef0f3;text-align:left}th{color:#6b7280;font-weight:600}.empty{text-align:center;padding:28px;color:#9ca3af}.badge{padding:4px 8px;border-radius:20px;font-size:11px;background:#eef2ff;color:#3730a3}.danger{background:#fee2e2;color:#991b1b}.ok{background:#dcfce7;color:#166534}.hidden{display:none}.mobilebar{display:none}.quick{display:flex;gap:10px;flex-wrap:wrap}.quick .btn{background:#fff;color:#111827;border:1px solid #ddd}.profitbox{display:flex;justify-content:space-between;align-items:center}.muted{color:#6b7280}.right{text-align:right}.recent-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.recent-card{border:1px solid #e6e9ef;border-radius:14px;padding:15px;background:linear-gradient(180deg,#fff,#fafbfc);box-shadow:0 4px 14px #0000000a}.recent-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.recent-customer{font-size:16px;font-weight:800}.recent-sub{margin-top:4px;color:#6b7280;font-size:12px}.recent-contact{display:flex;flex-direction:column;gap:5px;margin:12px 0;color:#4b5563;font-size:12px;background:#f8fafc;border-radius:10px;padding:9px}.recent-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.recent-stats>div{background:#fff;border:1px solid #eef0f3;border-radius:10px;padding:8px;text-align:center}.recent-stats small{display:block;color:#8a94a6;font-size:10px;margin-bottom:4px}.recent-stats strong{font-size:12px}.recent-action{margin-top:12px;display:flex;justify-content:flex-end;align-items:center}.recent-action .btn{padding:8px 11px;font-size:12px}.paid-done{font-size:12px;font-weight:700;color:#166534;background:#dcfce7;border-radius:9px;padding:8px 11px}@media(max-width:900px){.recent-grid{grid-template-columns:1fr}}@media(max-width:650px){.recent-grid{grid-template-columns:1fr}.recent-stats{grid-template-columns:repeat(2,1fr)}.recent-contact{font-size:11px}.recent-customer{font-size:15px}}
+@media(max-width:900px){.side{width:210px}.main{margin-left:210px;width:calc(100% - 210px)}.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.side{display:none}.main{margin:0;padding:15px;width:100%}.cards{grid-template-columns:1fr 1fr;gap:9px}.card{padding:13px}.value{font-size:20px}.grid2,.formgrid{grid-template-columns:1fr}.mobilebar{display:flex;position:sticky;top:0;background:#fff;border-bottom:1px solid #eee;padding:10px;z-index:5;justify-content:space-between}.mobilebar strong{font-size:18px}.top{margin-top:14px}.section{padding:13px;overflow:auto}.toolbar{align-items:flex-start;flex-direction:column}.toolbar .left{width:100%}.input{min-width:0}table{min-width:650px}}
+</style>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#111827"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body>
+<div class="app">
+<aside class="side"><div class="brand">KELQYAS<small>Business Management</small></div>
+<div class="nav">
+<button class="active" data-page="dashboard">📊 Dashboard</button>
+<button data-page="orders">🧾 ትዕዛዞች</button>
+<button data-page="customers">👥 ደንበኞች</button>
+<button data-page="products">📦 ምርቶች / Stock</button>
+<button data-page="complete">✅ Complete Order</button>
+<button data-page="finance">💰 ገንዘብ</button>
+<button data-page="reports">📈 Reports</button>
+<button data-page="settings">⚙️ Settings</button>
+</div></aside>
+<main class="main">
+<div class="mobilebar"><strong>KELQYAS</strong><span class="muted">Business App</span></div>
+<div id="dashboard" class="page">
+<div class="top"><div><h1>Dashboard</h1><div class="date" id="today"></div></div><button class="btn greenbtn" onclick="openOrder()">＋ አዲስ ትዕዛዝ</button></div>
+<div class="cards">
+<div class="card"><div class="label">ጠቅላላ ገቢ</div><div class="value green" id="dashIncome">0 Br</div></div>
+<div class="card"><div class="label">ጠቅላላ ወጪ</div><div class="value red" id="dashExpense">0 Br</div></div>
+<div class="card"><div class="label">Net Profit</div><div class="value blue" id="dashProfit">0 Br</div></div>
+<div class="card"><div class="label">ትዕዛዞች</div><div class="value" id="dashOrders">0</div></div>
+</div>
+<div class="grid2">
+<div class="section"><h2>ፈጣን ተግባሮች</h2><div class="quick"><button class="btn" onclick="openOrder()">🧾 ትዕዛዝ</button><button class="btn" onclick="openIncome()">💵 ገቢ</button><button class="btn" onclick="openExpense()">💸 ወጪ</button><button class="btn" onclick="page('products')">📦 Stock</button><button class="btn" onclick="page('complete')">✅ Complete Order</button></div></div>
+<div class="section"><div class="profitbox"><div><h2>ያልተከፈለ</h2><div class="muted">ከደንበኞች የሚቀር</div></div><div class="value red" id="dashDue">0 Br</div></div></div>
+</div>
+<div class="section"><h2>የቅርብ ጊዜ ትዕዛዞች</h2><div id="recentOrders"></div></div>
+</div>
+
+<div id="orders" class="page hidden"><div class="top"><h1>🧾 ትዕዛዞች</h1><button class="btn greenbtn" onclick="openOrder()">＋ አዲስ</button></div><div class="section"><div class="toolbar"><input class="input" id="orderSearch" placeholder="ደንበኛ / ምርት ፈልግ..." oninput="renderOrders()"></div><div id="ordersTable"></div></div></div>
+<div id="customers" class="page hidden"><div class="top"><h1>👥 ደንበኞች</h1><button class="btn greenbtn" onclick="openCustomer()">＋ አዲስ ደንበኛ</button></div><div class="section"><div id="customersTable"></div></div></div>
+<div id="products" class="page hidden"><div class="top"><h1>📦 ምርቶች / Stock</h1><div><button class="btn secondary" onclick="page('dashboard')">← Back</button> <button class="btn greenbtn" onclick="openProduct()">＋ አዲስ ምርት</button></div></div><div class="section"><div id="productsTable"></div></div><div class="section"><h2>📋 የStock እንቅስቃሴ</h2><div id="stockHistory"></div></div></div>
+<div id="complete" class="page hidden"><div class="top"><h1>✅ Complete Order</h1><button class="btn secondary" onclick="page('dashboard')">✕</button></div><div class="cards" id="completeSummary"></div><div class="section"><h2>የምርት አይነት ማጠቃለያ</h2><div id="completeTypes"></div></div><div class="section"><h2>የደንበኞች ዝርዝር</h2><div id="completeCustomers"></div></div></div>
+<div id="finance" class="page hidden"><div class="top"><h1>💰 ገንዘብ</h1><div><button class="btn greenbtn" onclick="openIncome()">＋ ገቢ</button> <button class="btn" onclick="openExpense()">＋ ወጪ</button></div></div><div class="cards"><div class="card"><div class="label">Income</div><div class="value green" id="finIncome">0 Br</div></div><div class="card"><div class="label">Expense</div><div class="value red" id="finExpense">0 Br</div></div><div class="card"><div class="label">Net</div><div class="value blue" id="finNet">0 Br</div></div></div><div class="section"><div id="transactionsTable"></div></div></div>
+<div id="reports" class="page hidden"><div class="top"><h1>📈 Reports</h1></div><div class="section"><h2>የንግድ ማጠቃለያ</h2><div id="reportContent"></div></div></div>
+<div id="settings" class="page hidden"><div class="top"><h1>⚙️ Settings</h1></div><div class="section"><h2>የApp መረጃ</h2><p class="muted">KELQYAS Business Management App</p><p>Currency: Ethiopian Birr (Br)</p><p>Data: በዚህ Browser ላይ ይቀመጣል።</p><button class="btn secondary" onclick="exportData()">⬇️ Backup አውርድ</button> <button class="btn" onclick="importData()">⬆️ Backup መመለስ</button> <button class="btn" onclick="resetData()">Reset Data</button></div></div>
+</main></div>
+
+<div id="modal" class="hidden" style="position:fixed;inset:0;background:#0008;display:none;align-items:center;justify-content:center;padding:15px;z-index:20"><div style="background:#fff;border-radius:15px;max-width:650px;width:100%;padding:20px;max-height:92vh;overflow:auto"><div style="display:flex;justify-content:space-between;align-items:center"><h2 id="modalTitle"></h2><button class="btn secondary" onclick="closeModal()">✕</button></div><form id="form"></form></div></div>
+<input id="file" type="file" accept=".json" hidden>
+<script>
+const KEY="kelqyas_business_v1_fresh_20260917";
+let db=JSON.parse(localStorage.getItem(KEY)||'null')||{orders:[],customers:[],products:[],transactions:[],stockMovements:[]};
+db.stockMovements=db.stockMovements||[];
+function save(){localStorage.setItem(KEY,JSON.stringify(db));renderAll()}
+function br(n){return Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2})+" Br"}
+function id(){return Date.now()+Math.random().toString(16).slice(2)}
+function page(p){document.querySelectorAll('.page').forEach(x=>x.classList.add('hidden'));document.getElementById(p).classList.remove('hidden');document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===p));renderAll()}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>page(b.dataset.page));
+function modal(title,html,submit){document.getElementById('modalTitle').textContent=title;document.getElementById('form').innerHTML=html;document.getElementById('form').onsubmit=e=>{e.preventDefault();submit(new FormData(e.target));closeModal()};let m=document.getElementById('modal');m.style.display='flex';m.classList.remove('hidden')}
+function closeModal(){let m=document.getElementById('modal');m.style.display='none';m.classList.add('hidden')}
+function openOrder(){
+let opts=db.products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+modal("አዲስ ትዕዛዝ",`<div class="formgrid"><div class="field"><label>ደንበኛ</label><input class="input" name="customer" required></div><div class="field"><label>ስልክ</label><input class="input" name="phone"></div><div class="field"><label>አድራሻ</label><input class="input" name="address" placeholder="የደንበኛ አድራሻ"></div><div class="field"><label>ምርት</label><select class="select" name="product" required><option value="">ምረጥ</option>${opts}</select></div><div class="field"><label>ብዛት</label><input class="input" name="qty" type="number" min="1" value="1" required></div><div class="field"><label>የአንዱ ዋጋ</label><input class="input" name="price" type="number" min="0" required></div><div class="field"><label>የተከፈለ</label><input class="input" name="paid" type="number" min="0" value="0"></div><div class="field"><label>ሁኔታ</label><input class="input" value="Pending" disabled><input type="hidden" name="status" value="Pending"></div><div class="field"><label>የማስረከቢያ ቀን</label><input class="input" name="delivery" type="date"></div><div class="field full"><label>ማስታወሻ</label><input class="input" name="notes"></div></div><br><button class="btn greenbtn">Save Order</button>`,f=>{let selectedProduct=f.get('product');let prod=db.products.find(p=>p.id===selectedProduct||p.name===selectedProduct);let q=+f.get('qty'),price=+f.get('price'),paid=+f.get('paid');db.orders.unshift({id:id(),date:new Date().toISOString(),customer:f.get('customer'),phone:f.get('phone'),address:f.get('address'),productId:prod?.id||'',product:prod?.name||selectedProduct,qty:q,price,total:q*price,paid,remaining:q*price-paid,status:f.get('status'),paymentStatus:(paid>=q*price?"Paid":(paid>0?"Partial":"Unpaid")),delivery:f.get('delivery'),notes:f.get('notes')});let c=db.customers.find(x=>x.name===f.get('customer'));if(!c)db.customers.push({id:id(),name:f.get('customer'),phone:f.get('phone'),orders:1});else c.orders++;if(paid>0)db.transactions.unshift({id:id(),date:new Date().toISOString(),type:"Income",amount:paid,category:"Sales",method:"Cash",note:"Order payment - "+f.get('customer')});save()})
+}
+function approveOrder(orderId){
+  const o=db.orders.find(x=>x.id===orderId); if(!o||o.status!=="Pending")return;
+  const prod=db.products.find(p=>p.id===o.productId||p.name===o.product);
+  const qty=+o.qty||1;
+  if(prod){
+    const stock=+prod.stock||0;
+    if(stock<qty){alert(`Stock በቂ አይደለም። ${o.product} ላይ ${stock} ብቻ አለ፣ ${qty} ያስፈልጋል።`);return;}
+    prod.stock=stock-qty; o.stockDeducted=true;
+    db.stockMovements.unshift({id:id(),date:new Date().toISOString(),type:"Sale",productId:prod.id,product:prod.name,qty,orderId:o.id,note:"Order approved / sold"});
+  }
+  o.status="Approved"; o.approvedAt=new Date().toISOString(); save();
+}
+function receivePayment(orderId){
+  const o=db.orders.find(x=>x.id===orderId);
+  if(!o)return;
+  const remaining=+o.remaining||0;
+  modal("💵 የትዕዛዝ ክፍያ ማረጋገጫ",`<div class="section" style="margin:0 0 12px"><b>${o.customer}</b><br>${o.product}<br><span class="muted">የቀረው: ${br(remaining)}</span></div>
+  <div class="formgrid">
+    <div class="field"><label>የተቀበልከው መጠን</label><input class="input" name="amount" type="number" min="0" max="${remaining}" value="${remaining}" required></div>
+    <div class="field"><label>Payment Method</label><select class="select" name="method"><option>Cash</option><option>Telebirr</option><option>Bank</option><option>Other</option></select></div>
+    <div class="field"><label>የተቀበለበት ቀን</label><input class="input" name="date" type="date" value="${new Date().toISOString().slice(0,10)}"></div>
+    <div class="field full"><label>ማስታወሻ</label><input class="input" name="note" value="Final payment - ${o.customer}"></div>
+  </div><br><button class="btn greenbtn">✓ ክፍያውን አረጋግጥ</button>`,
+  f=>{
+    const amount=Math.min(Math.max(+f.get('amount')||0,0),remaining);
+    if(amount<=0)return;
+    o.paid=(+o.paid||0)+amount;
+    o.remaining=Math.max(0,(+o.total||0)-o.paid);
+    if(o.remaining<=0){o.remaining=0;o.paymentStatus="Paid"}else{o.paymentStatus="Partial"}
+    db.transactions.unshift({id:id(),date:f.get('date'),type:"Income",amount,category:"Sales",method:f.get('method'),note:f.get('note')||("Payment - "+o.customer)});
+    save();
+    page("orders");
+  }
+)}
+function openCustomer(){modal("አዲስ ደንበኛ",`<div class="formgrid"><div class="field"><label>ስም</label><input class="input" name="name" required></div><div class="field"><label>ስልክ</label><input class="input" name="phone"></div><div class="field full"><label>ማስታወሻ</label><input class="input" name="note"></div></div><br><button class="btn greenbtn">Save</button>`,f=>{db.customers.unshift({id:id(),name:f.get('name'),phone:f.get('phone'),orders:0,note:f.get('note')});save()})}
+function openProduct(){modal("አዲስ ምርት",`<div class="formgrid"><div class="field"><label>የምርት ስም</label><input class="input" name="name" required></div><div class="field"><label>የመሸጫ ዋጋ</label><input class="input" name="price" type="number" value="0"></div><div class="field"><label>መጀመሪያ Stock</label><input class="input" name="stock" type="number" min="0" value="0"></div><div class="field"><label>Low-stock limit</label><input class="input" name="low" type="number" min="0" value="5"></div></div><br><button class="btn greenbtn">Save</button>`,f=>{const stock=+f.get('stock')||0;const product={id:id(),name:f.get('name'),price:+f.get('price')||0,stock,low:+f.get('low')||0};db.products.unshift(product);if(stock>0)db.stockMovements.unshift({id:id(),date:new Date().toISOString(),type:"Production",productId:product.id,product:product.name,qty:stock,note:"Opening stock"});save()})}
+function addProduction(productId){const p=db.products.find(x=>x.id===productId);if(!p)return;modal("🏭 ዕለታዊ ምርት ጨምር",`<div class="section" style="margin:0 0 12px"><b>${p.name}</b><br><span class="muted">አሁን ያለው Stock: ${+p.stock||0}</span></div><div class="formgrid"><div class="field"><label>ዛሬ ያመረትከው ብዛት</label><input class="input" name="qty" type="number" min="1" value="1" required></div><div class="field"><label>የምርት ቀን</label><input class="input" name="date" type="date" value="${new Date().toISOString().slice(0,10)}"></div><div class="field full"><label>ማስታወሻ</label><input class="input" name="note"></div></div><br><button class="btn greenbtn">＋ Stock ጨምር</button>`,f=>{const q=+f.get('qty')||0;if(q<=0)return;p.stock=(+p.stock||0)+q;db.stockMovements.unshift({id:id(),date:f.get('date'),type:"Production",productId:p.id,product:p.name,qty:q,note:f.get('note')||"Daily production"});save()})}
+function openIncome(){tx("Income")}
+function openExpense(){tx("Expense")}
+function tx(type){modal(type==="Income"?"💵 አዲስ ገቢ":"💸 አዲስ ወጪ",`<div class="formgrid"><div class="field"><label>Amount</label><input class="input" name="amount" type="number" min="0" required></div><div class="field"><label>Category</label><select class="select" name="cat"><option>Sales</option><option>Materials</option><option>Labor</option><option>Transport</option><option>Packaging</option><option>Other</option></select></div><div class="field"><label>Payment Method</label><select class="select" name="method"><option>Cash</option><option>Telebirr</option><option>Bank</option><option>Other</option></select></div><div class="field"><label>Date</label><input class="input" name="date" type="date" value="${new Date().toISOString().slice(0,10)}"></div><div class="field full"><label>Note</label><input class="input" name="note"></div></div><br><button class="btn greenbtn">Save</button>`,f=>{db.transactions.unshift({id:id(),date:f.get('date'),type,amount:+f.get('amount'),category:f.get('cat'),method:f.get('method'),note:f.get('note')});save()})}
+function ensureDefaultProducts(){const names=["የበገና ቦርሳ","የመሰንቆ ቦርሳ","የክራር ቦርሳ"];for(const name of names){if(!db.products.some(p=>p.name===name))db.products.push({id:id(),name,price:0,stock:0,low:5})}}
+function normalizeOrders(){db.orders.forEach(o=>{o.qty=+o.qty||1;o.price=+o.price||0;o.total=+o.total||o.qty*o.price;o.paid=+o.paid||0;o.remaining=Math.max(0,o.total-o.paid);o.status=o.status||"Pending";o.address=o.address||"";o.paymentStatus=o.remaining<=0?"Paid":(o.paid>0?"Partial":"Unpaid")})}
+function renderAll(){normalizeOrders();ensureDefaultProducts();let inc=db.transactions.filter(x=>x.type==="Income").reduce((a,x)=>a+x.amount,0),exp=db.transactions.filter(x=>x.type==="Expense").reduce((a,x)=>a+x.amount,0),due=db.orders.reduce((a,x)=>a+(+x.remaining||0),0);dashIncome.textContent=br(inc);dashExpense.textContent=br(exp);dashProfit.textContent=br(inc-exp);dashOrders.textContent=db.orders.length;dashDue.textContent=br(due);finIncome.textContent=br(inc);finExpense.textContent=br(exp);finNet.textContent=br(inc-exp);today.textContent=new Date().toLocaleDateString('en-GB');renderOrders();renderCustomers();renderProducts();renderTransactions();renderRecent();renderComplete();renderReports()}
+function renderOrders(){
+  let q=(orderSearch?.value||"").toLowerCase();
+  let a=db.orders.filter(x=>(x.customer+" "+x.product).toLowerCase().includes(q));
+  ordersTable.innerHTML=a.length?`<table>
+  <tr><th>ቀን</th><th>ደንበኛ</th><th>ምርት</th><th>Qty</th><th>Total</th><th>Paid</th><th>Remaining</th><th>Payment</th><th>Status</th><th>Action</th></tr>
+  ${a.map(x=>`<tr>
+    <td>${new Date(x.date).toLocaleDateString()}</td>
+    <td>${x.customer}</td>
+    <td>${x.product}</td>
+    <td>${x.qty}</td>
+    <td>${br(x.total)}</td>
+    <td>${br(x.paid)}</td>
+    <td class="red">${br(x.remaining)}</td>
+    <td>${x.remaining<=0?'<span class="badge ok">Paid</span>':(x.paid>0?'<span class="badge">Partial</span>':'<span class="badge danger">Unpaid</span>')}</td>
+    <td><span class="badge ${x.status==="Completed"?"ok":x.status==="Approved"?"ok":x.status==="Pending"?"danger":""}">${x.status}</span></td>
+    <td>
+      ${x.status==="Pending"?`<button class="btn greenbtn" style="padding:6px 9px;font-size:11px" onclick="approveOrder('${x.id}')">✓ Approve</button>`:
+        x.remaining>0?`<button class="btn greenbtn" style="padding:6px 9px;font-size:11px" onclick="receivePayment('${x.id}')">💵 ክፍያ መቀበል</button>`:'✓ ተከፍሏል'}
+    </td>
+  </tr>`).join('')}</table>`:`<div class="empty">ምንም ትዕዛዝ የለም</div>`
+}
+function renderCustomers(){customersTable.innerHTML=db.customers.length?`<table><tr><th>ስም</th><th>ስልክ</th><th>ትዕዛዞች</th><th>ያልተከፈለ</th></tr>${db.customers.map(c=>{let due=db.orders.filter(o=>o.customer===c.name).reduce((a,o)=>a+o.remaining,0);return `<tr><td>${c.name}</td><td>${c.phone||"-"}</td><td>${c.orders||0}</td><td class="red">${br(due)}</td></tr>`}).join('')}</table>`:`<div class="empty">ደንበኛ የለም</div>`}
+function renderProducts(){productsTable.innerHTML=db.products.length?`<table><tr><th>ምርት</th><th>ዋጋ</th><th>ያለው Stock</th><th>ሁኔታ</th><th>Action</th></tr>${db.products.map(p=>`<tr><td>${p.name}</td><td>${br(p.price)}</td><td><b>${+p.stock||0}</b></td><td>${(+p.stock||0)<= (+p.low||0)?'<span class="badge danger">Low Stock</span>':'<span class="badge ok">OK</span>'}</td><td><button class="btn greenbtn" style="padding:6px 9px;font-size:11px" onclick="addProduction('${p.id}')">＋ ምርት ጨምር</button></td></tr>`).join('')}</table><div class="muted" style="margin-top:12px">💡 በየቀኑ ያመረትከውን ብዛት ጨምር፤ ትዕዛዝ Approved ሲሆን የተሸጠው ብዛት Stock ላይ በራሱ ይቀንሳል።</div>`:`<div class="empty">ምርት አልተመዘገበም</div>`;renderStockHistory()}
+function renderStockHistory(){const a=(db.stockMovements||[]).slice(0,30);stockHistory.innerHTML=a.length?`<table><tr><th>ቀን</th><th>ምርት</th><th>አይነት</th><th>ብዛት</th><th>ማስታወሻ</th></tr>${a.map(x=>`<tr><td>${x.date}</td><td>${x.product}</td><td>${x.type==="Production"?'<span class="badge ok">🏭 ምርት</span>':'<span class="badge danger">🛒 ሽያጭ</span>'}</td><td>${x.type==="Production"?"+":"-"}${x.qty}</td><td>${x.note||''}</td></tr>`).join('')}</table>`:`<div class="empty">የStock እንቅስቃሴ የለም</div>`}
+function renderTransactions(){transactionsTable.innerHTML=db.transactions.length?`<table><tr><th>ቀን</th><th>Type</th><th>Amount</th><th>Category</th><th>Method</th><th>Note</th></tr>${db.transactions.map(x=>`<tr><td>${x.date}</td><td>${x.type}</td><td class="${x.type==="Income"?"green":"red"}">${x.type==="Income"?"+":"-"}${br(x.amount)}</td><td>${x.category}</td><td>${x.method}</td><td>${x.note||""}</td></tr>`).join('')}</table>`:`<div class="empty">ገቢ/ወጪ የለም</div>`}
+function renderRecent(){
+  let recent=db.orders.slice(0,5);
+  recentOrders.innerHTML=recent.length?`<div class="recent-grid">
+  ${recent.map(x=>{
+    let statusClass=x.status==="Pending"?"danger":x.status==="Approved"||x.status==="Completed"?"ok":"";
+    let action=x.status==="Pending"?`<button class="btn secondary" onclick="editOrder('${x.id}')">✏️ Edit</button> <button class="btn greenbtn" onclick="approveOrder('${x.id}')">✓ ትዕዛዝ አጽድቅ</button> <button class="btn" onclick="deleteOrder('${x.id}')">🗑️ Delete</button>`:x.remaining>0?`<button class="btn greenbtn" onclick="receivePayment('${x.id}')">💵 ክፍያ መመዝገብ</button> <button class="btn" onclick="deleteOrder('${x.id}')">🗑️ Delete</button>`:`<span class="paid-done">✓ ሙሉ ተከፍሏል</span> <button class="btn" onclick="deleteOrder('${x.id}')">🗑️ Delete</button>`;
+    return `<div class="recent-card">
+      <div class="recent-head"><div><div class="recent-customer">${x.customer}</div><div class="recent-sub">🧾 ${x.product}</div></div><span class="badge ${statusClass}">${x.status}</span></div>
+      <div class="recent-contact"><span>📞 ${x.phone||"ስልክ የለም"}</span><span>📍 ${x.address||"አድራሻ የለም"}</span></div>
+      <div class="recent-stats">
+        <div><small>ብዛት</small><strong>${x.qty||0}</strong></div>
+        <div><small>Total</small><strong>${br(x.total)}</strong></div>
+        <div><small>ቀብዲ</small><strong class="green">${br(x.paid)}</strong></div>
+        <div><small>ቀሪ</small><strong class="red">${br(x.remaining)}</strong></div>
+      </div>
+      <div class="recent-action">${action}</div>
+    </div>`;
+  }).join('')}</div>`:
+  `<div class="empty">አሁንም ትዕዛዝ የለም። “＋ አዲስ ትዕዛዝ” በመጫን ጀምር።</div>`
+}
+function editOrder(orderId){const o=db.orders.find(x=>x.id===orderId);if(!o||o.status!=="Pending")return;let opts=db.products.map(p=>`<option value="${p.id}" ${p.id===o.productId?'selected':''}>${p.name}</option>`).join('');modal("✏️ Order Edit",`<div class="formgrid"><div class="field"><label>ደንበኛ</label><input class="input" name="customer" value="${o.customer||''}" required></div><div class="field"><label>ስልክ</label><input class="input" name="phone" value="${o.phone||''}"></div><div class="field"><label>አድራሻ</label><input class="input" name="address" value="${o.address||''}"></div><div class="field"><label>ምርት</label><select class="select" name="product">${opts}</select></div><div class="field"><label>ብዛት</label><input class="input" name="qty" type="number" min="1" value="${o.qty||1}" required></div><div class="field"><label>የአንዱ ዋጋ</label><input class="input" name="price" type="number" min="0" value="${o.price||0}" required></div><div class="field"><label>ቀብዲ</label><input class="input" value="${o.paid||0} Br" disabled></div><div class="field"><label>ሁኔታ</label><input class="input" value="Pending" disabled></div><div class="field"><label>የማስረከቢያ ቀን</label><input class="input" name="delivery" type="date" value="${o.delivery||''}"></div><div class="field full"><label>ማስታወሻ</label><input class="input" name="notes" value="${o.notes||''}"></div></div><br><button class="btn greenbtn">✓ Update Order</button>`,f=>{const prod=db.products.find(p=>p.id===f.get('product'));o.customer=f.get('customer');o.phone=f.get('phone');o.address=f.get('address');o.productId=prod?.id||'';o.product=prod?.name||'';o.qty=+f.get('qty')||1;o.price=+f.get('price')||0;o.total=o.qty*o.price;o.remaining=Math.max(0,o.total-(+o.paid||0));o.paymentStatus=o.remaining<=0?'Paid':((+o.paid||0)>0?'Partial':'Unpaid');o.delivery=f.get('delivery');o.notes=f.get('notes');o.editedAt=new Date().toISOString();save()})}
+function deleteOrder(orderId){const o=db.orders.find(x=>x.id===orderId);if(!o||!confirm('ይህን Order ማጥፋት እርግጠኛ ነህ?'))return;if(o.stockDeducted){const p=db.products.find(x=>x.id===o.productId||x.name===o.product);if(p){p.stock=(+p.stock||0)+(+o.qty||0);db.stockMovements.unshift({id:id(),date:new Date().toISOString(),type:'Production',productId:p.id,product:p.name,qty:+o.qty||0,orderId:o.id,note:'Order deleted / stock returned'});}}const paid=+o.paid||0;if(paid>0){let left=paid;for(let i=db.transactions.length-1;i>=0&&left>0;i--){const t=db.transactions[i];if(t.type==='Income'&&t.category==='Sales'&&String(t.note||'').includes(String(o.customer||''))){const take=Math.min(+t.amount||0,left);t.amount=(+t.amount||0)-take;left-=take;if(t.amount<=0)db.transactions.splice(i,1);}}if(left>0)db.transactions.unshift({id:id(),date:new Date().toISOString(),type:'Expense',amount:left,category:'Sales Reversal',method:'Cash',note:'Reversal for deleted order - '+(o.customer||'')});}db.orders=db.orders.filter(x=>x.id!==orderId);save()}
+function renderComplete(){const done=db.orders.filter(o=>o.status==='Approved'||o.status==='Completed');const types=[['የመሰንቆ ቦርሳ','mesenko'],['የበገና ቦርሳ','begena'],['የክራር ቦርሳ','krar']];const classify=n=>{n=n||'';if(n.includes('መሰንቆ'))return 'mesenko';if(n.includes('በገና'))return 'begena';if(n.includes('ክራር'))return 'krar';return 'other'};const totalBags=done.reduce((s,o)=>s+(+o.qty||0),0);const custSet=new Set(done.map(o=>o.customer).filter(Boolean));completeSummary.innerHTML=`<div class="card"><div class="label">Total Complete Order</div><div class="value">${done.length}</div></div><div class="card"><div class="label">Total Customer</div><div class="value">${custSet.size}</div></div><div class="card"><div class="label">Total Bags</div><div class="value">${totalBags}</div></div>`;completeTypes.innerHTML=`<table><tr><th>አይነት</th><th>Total Complete Order</th><th>Customer</th><th>Bag Qty</th></tr>${types.map(([label,key])=>{let a=done.filter(o=>classify(o.product)===key),cs=new Set(a.map(o=>o.customer).filter(Boolean));return `<tr><td>${label}</td><td>${a.length}</td><td>${cs.size}</td><td>${a.reduce((s,o)=>s+(+o.qty||0),0)}</td></tr>`}).join('')}<tr><th>ሌሎች</th><th>${done.filter(o=>classify(o.product)==='other').length}</th><th>${new Set(done.filter(o=>classify(o.product)==='other').map(o=>o.customer).filter(Boolean)).size}</th><th>${done.filter(o=>classify(o.product)==='other').reduce((s,o)=>s+(+o.qty||0),0)}</th></tr></table>`;completeCustomers.innerHTML=done.length?`<table><tr><th>ደንበኛ</th><th>ምርት</th><th>ብዛት</th><th>ቀን</th><th>ሁኔታ</th></tr>${done.map(o=>`<tr><td>${o.customer}</td><td>${o.product}</td><td>${o.qty}</td><td>${new Date(o.date).toLocaleDateString()}</td><td><span class="badge ok">${o.status}</span></td></tr>`).join('')}</table>`:`<div class="empty">Complete Order የለም</div>`}
+function renderReports(){let inc=db.transactions.filter(x=>x.type==="Income").reduce((a,x)=>a+x.amount,0),exp=db.transactions.filter(x=>x.type==="Expense").reduce((a,x)=>a+x.amount,0),sales=db.orders.reduce((a,x)=>a+x.total,0),paid=db.orders.reduce((a,x)=>a+x.paid,0);reportContent.innerHTML=`<div class="cards"><div class="card"><div class="label">Sales Value</div><div class="value">${br(sales)}</div></div><div class="card"><div class="label">Collected</div><div class="value green">${br(paid)}</div></div><div class="card"><div class="label">Outstanding</div><div class="value red">${br(sales-paid)}</div></div><div class="card"><div class="label">Net</div><div class="value blue">${br(inc-exp)}</div></div></div>`}
+function exportData(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:"application/json"}));a.download="kelqyas-backup.json";a.click()}
+function importData(){file.click();file.onchange=()=>{let r=new FileReader();r.onload=()=>{try{db=JSON.parse(r.result);save();alert("Backup ተመልሷል");}catch(e){alert("Backup ፋይሉ ትክክል አይደለም")}};r.readAsText(file.files[0])}}
+function resetData(){if(confirm("አዲስ KELQYAS App እንደጀመርክ ሁሉንም የቀድሞ ትዕዛዝ፣ ደንበኛ፣ ገቢ እና ወጪ መረጃ ማጥፋት ትፈልጋለህ?")){db={orders:[],customers:[],products:[],transactions:[],stockMovements:[]};save();alert("KELQYAS አዲስ ተጀምሯል። ገቢ = 0 Br፣ ወጪ = 0 Br።")}}
+renderAll();
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));}</script></body></html>
