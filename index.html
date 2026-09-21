@@ -87,17 +87,53 @@ let opts=db.products.map(p=>`<option value="${p.id}">${p.name}</option>`).join('
 modal("አዲስ ትዕዛዝ",`<div class="formgrid"><div class="field"><label>ደንበኛ</label><input class="input" name="customer" required></div><div class="field"><label>ስልክ</label><input class="input" name="phone"></div><div class="field"><label>አድራሻ</label><input class="input" name="address" placeholder="የደንበኛ አድራሻ"></div><div class="field"><label>ምርት</label><select class="select" name="product" required><option value="">ምረጥ</option>${opts}</select></div><div class="field"><label>ብዛት</label><input class="input" name="qty" type="number" min="1" value="1" required></div><div class="field"><label>የአንዱ ዋጋ</label><input class="input" name="price" type="number" min="0" required></div><div class="field"><label>የተከፈለ</label><input class="input" name="paid" type="number" min="0" value="0"></div><div class="field"><label>ሁኔታ</label><input class="input" value="Pending" disabled><input type="hidden" name="status" value="Pending"></div><div class="field"><label>የማስረከቢያ ቀን</label><input class="input" name="delivery" type="date"></div><div class="field full"><label>ማስታወሻ</label><input class="input" name="notes"></div></div><br><button class="btn greenbtn">Save Order</button>`,f=>{let selectedProduct=f.get('product');let prod=db.products.find(p=>p.id===selectedProduct||p.name===selectedProduct);let q=+f.get('qty'),price=+f.get('price'),paid=+f.get('paid');db.orders.push({id:id(),date:new Date().toISOString(),customer:f.get('customer'),phone:f.get('phone'),address:f.get('address'),productId:prod?.id||'',product:prod?.name||selectedProduct,qty:q,price,total:q*price,paid,remaining:q*price-paid,status:f.get('status'),paymentStatus:(paid>=q*price?"Paid":(paid>0?"Partial":"Unpaid")),delivery:f.get('delivery'),notes:f.get('notes')});let c=db.customers.find(x=>x.name===f.get('customer'));if(!c)db.customers.push({id:id(),name:f.get('customer'),phone:f.get('phone'),orders:1});else c.orders++;if(paid>0)db.transactions.unshift({id:id(),date:new Date().toISOString(),type:"Income",amount:paid,category:"Sales",method:"Cash",note:"Order payment - "+f.get('customer')});save()})
 }
 function approveOrder(orderId){
-  const o=db.orders.find(x=>x.id===orderId); if(!o||o.status!=="Pending")return;
-  const prod=db.products.find(p=>p.id===o.productId||p.name===o.product);
+  const o=db.orders.find(x=>x.id===orderId);
+  if(!o || o.status!=="Pending") return;
+
+  const prod=db.products.find(p=>p.id===o.productId || p.name===o.product);
   const qty=+o.qty||1;
-  if(prod){
+
+  if(prod && !o.stockDeducted){
     const stock=+prod.stock||0;
-    if(stock<qty){alert(`Stock በቂ አይደለም። ${o.product} ላይ ${stock} ብቻ አለ፣ ${qty} ያስፈልጋል።`);return;}
-    prod.stock=stock-qty; o.stockDeducted=true;
-    db.stockMovements.unshift({id:id(),date:new Date().toISOString(),type:"Sale",productId:prod.id,product:prod.name,qty,orderId:o.id,note:"Order approved / sold"});
+    if(stock<qty){
+      alert(`Stock በቂ አይደለም። ${o.product} ላይ ${stock} ብቻ አለ፣ ${qty} ያስፈልጋል።`);
+      return;
+    }
+    prod.stock=stock-qty;
+    o.stockDeducted=true;
+    db.stockMovements.unshift({
+      id:id(),date:new Date().toISOString(),type:"Sale",
+      productId:prod.id,product:prod.name,qty,orderId:o.id,
+      note:"Order approved / sold"
+    });
   }
-  o.status="Approved"; o.approvedAt=new Date().toISOString(); save();
+
+  // Deposit paid when the order was created is already in Income.
+  // When Approved, record ONLY the remaining balance so the total sale
+  // becomes Income without double-counting the deposit.
+  const total=+o.total || ((+o.qty||1)*(+o.price||0));
+  const paidBeforeApproval=+o.paid||0;
+  const remainingToRecord=Math.max(0,total-paidBeforeApproval);
+
+  if(remainingToRecord>0 && !o.approvalIncomeRecorded){
+    db.transactions.unshift({
+      id:id(),date:new Date().toISOString(),type:"Income",
+      amount:remainingToRecord,category:"Sales",method:"Cash",
+      note:"Approved order - remaining balance - "+(o.customer||"")
+    });
+    o.approvalIncomeRecorded=true;
+  }
+
+  // Approved orders leave Pending/Dashboard and have zero outstanding balance.
+  o.paid=total;
+  o.remaining=0;
+  o.paymentStatus="Paid";
+  o.status="Approved";
+  o.approvedAt=new Date().toISOString();
+
+  save();
 }
+
 function receivePayment(orderId){
   const o=db.orders.find(x=>x.id===orderId);
   if(!o)return;
@@ -128,7 +164,7 @@ function openExpense(){tx("Expense")}
 function tx(type){modal(type==="Income"?"💵 አዲስ ገቢ":"💸 አዲስ ወጪ",`<div class="formgrid"><div class="field"><label>Amount</label><input class="input" name="amount" type="number" min="0" required></div><div class="field"><label>የወጪ አይነት</label><select class="select" name="cat"><option>Sales</option><option>Materials</option><option>Labor</option><option>Transport</option><option>Packaging</option><option>Other</option></select></div><div class="field"><label>Payment Method</label><select class="select" name="method"><option>Cash</option><option>Telebirr</option><option>Bank</option><option>Other</option></select></div><div class="field"><label>Date</label><input class="input" name="date" type="date" value="${new Date().toISOString().slice(0,10)}"></div><div class="field full"><label>ወጪው ለምን? / ምክንያት</label><input class="input" name="note" placeholder="ለምን እንደወጣ ይጻፉ"></div></div><br><button class="btn greenbtn">Save</button>`,f=>{db.transactions.unshift({id:id(),date:f.get('date'),type,amount:+f.get('amount'),category:f.get('cat'),method:f.get('method'),note:f.get('note')});save()})}
 function ensureDefaultProducts(){const names=["የበገና ቦርሳ","የመሰንቆ ቦርሳ","የክራር ቦርሳ"];for(const name of names){if(!db.products.some(p=>p.name===name))db.products.push({id:id(),name,price:0,stock:0,low:5})}}
 function normalizeOrders(){db.orders.forEach(o=>{o.qty=+o.qty||1;o.price=+o.price||0;o.total=+o.total||o.qty*o.price;o.paid=+o.paid||0;o.remaining=Math.max(0,o.total-o.paid);o.status=o.status||"Pending";o.address=o.address||"";o.paymentStatus=o.remaining<=0?"Paid":(o.paid>0?"Partial":"Unpaid")})}
-function renderAll(){normalizeOrders();ensureDefaultProducts();let inc=db.transactions.filter(x=>x.type==="Income").reduce((a,x)=>a+x.amount,0),exp=db.transactions.filter(x=>x.type==="Expense").reduce((a,x)=>a+x.amount,0),due=db.orders.reduce((a,x)=>a+(+x.remaining||0),0);dashIncome.textContent=br(inc);dashExpense.textContent=br(exp);dashProfit.textContent=br(inc-exp);dashOrders.textContent=db.orders.length;dashDue.textContent=br(due);finIncome.textContent=br(inc);finExpense.textContent=br(exp);finNet.textContent=br(inc-exp);today.textContent=new Date().toLocaleDateString('en-GB');renderOrders();renderCustomers();renderProducts();renderTransactions();renderExpenses();renderRecent();renderComplete();renderReports()}
+function renderAll(){normalizeOrders();ensureDefaultProducts();let inc=db.transactions.filter(x=>x.type==="Income").reduce((a,x)=>a+x.amount,0),exp=db.transactions.filter(x=>x.type==="Expense").reduce((a,x)=>a+x.amount,0),due=db.orders.reduce((a,x)=>a+(+x.remaining||0),0);dashIncome.textContent=br(inc);dashExpense.textContent=br(exp);dashProfit.textContent=br(inc-exp);dashOrders.textContent=db.orders.filter(x=>x.status==="Pending").length;dashDue.textContent=br(due);finIncome.textContent=br(inc);finExpense.textContent=br(exp);finNet.textContent=br(inc-exp);today.textContent=new Date().toLocaleDateString('en-GB');renderOrders();renderCustomers();renderProducts();renderTransactions();renderExpenses();renderRecent();renderComplete();renderReports()}
 function renderOrders(){
   let q=(orderSearch?.value||"").toLowerCase();
   let a=db.orders.filter(x=>(x.customer+" "+x.product).toLowerCase().includes(q));
@@ -156,7 +192,9 @@ function renderStockHistory(){const a=(db.stockMovements||[]).slice(0,30);stockH
 function renderExpenses(){const a=db.transactions.filter(x=>x.type==="Expense");const total=a.reduce((s,x)=>s+(+x.amount||0),0);expensesTable.innerHTML=a.length?`<div class="muted" style="margin-bottom:10px">ጠቅላላ ወጪ: <b class="red">${br(total)}</b></div><table><tr><th>ቀን</th><th>የወጪ አይነት</th><th>መጠን</th><th>የክፍያ ዘዴ</th><th>ለምን ወጣ? / ማስታወሻ</th></tr>${a.map(x=>`<tr><td>${x.date}</td><td>${x.category||"-"}</td><td class="red">-${br(x.amount)}</td><td>${x.method||"-"}</td><td>${x.note||"-"}</td></tr>`).join("")}</table>`:`<div class="empty">የወጪ ዝርዝር የለም</div>`}
 function renderTransactions(){transactionsTable.innerHTML=db.transactions.length?`<table><tr><th>ቀን</th><th>Type</th><th>Amount</th><th>Category</th><th>Method</th><th>Note</th></tr>${db.transactions.map(x=>`<tr><td>${x.date}</td><td>${x.type}</td><td class="${x.type==="Income"?"green":"red"}">${x.type==="Income"?"+":"-"}${br(x.amount)}</td><td>${x.category}</td><td>${x.method}</td><td>${x.note||""}</td></tr>`).join('')}</table>`:`<div class="empty">ገቢ/ወጪ የለም</div>`}
 function renderRecent(){
-  let recent=db.orders.slice(0,5);
+  // Dashboard ላይ የሚታዩት Pending orders ብቻ ናቸው።
+  // Approved/Completed orders ከዚህ ይጠፋሉ እና Complete Order ውስጥ ብቻ ይቀመጣሉ።
+  let recent=db.orders.filter(x=>x.status==='Pending').slice(0,5);
   recentOrders.innerHTML=recent.length?`<div class="recent-grid">
   ${recent.map(x=>{
     let statusClass=x.status==="Pending"?"danger":x.status==="Approved"||x.status==="Completed"?"ok":"";
